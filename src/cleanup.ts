@@ -1,5 +1,6 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
+import { getOctokit } from './octokit';
 
 async function run() {
   try {
@@ -21,7 +22,7 @@ async function run() {
     const context = github.context;
     const issueNumber = parseInt(prNumber) || context.payload.pull_request?.number || context.payload.issue?.number;
 
-    const octokit = github.getOctokit(githubToken);
+    const octokit = getOctokit(githubToken);
 
     if (!issueNumber) {
       core.setFailed('No issue/pull request in input neither in current context.');

@@ -2,6 +2,7 @@ import fs from 'fs';
 import * as github from '@actions/github';
 import * as core from '@actions/core';
 import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types';
+import { getOctokit } from './octokit';
 
 // See https://docs.github.com/en/rest/reactions#reaction-types
 const REACTIONS = ['+1', '-1', 'laugh', 'confused', 'heart', 'hooray', 'rocket', 'eyes'] as const;
@@ -31,7 +32,7 @@ async function run() {
     const context = github.context;
     const issueNumber = parseInt(prNumber) || context.payload.pull_request?.number || context.payload.issue?.number;
 
-    const octokit = github.getOctokit(githubToken);
+    const octokit = getOctokit(githubToken);
 
     if (!issueNumber) {
       core.setFailed('No issue/pull request in input neither in current context.');
